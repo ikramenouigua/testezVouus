@@ -59,62 +59,28 @@
             <ul
               class="flex-col md:flex-row list-none items-center hidden md:flex"
             >
-              <a
-                class="text-blueGray-500 block"
-                href="#pablo"
-                onclick="openDropdown(event,'user-dropdown')"
-              >
-                <div class="items-center flex">
-                  <span
-                    class="w-12 h-12 text-sm text-white bg-blueGray-200 inline-flex items-center justify-center rounded-full"
-                    ><img
-                      alt="..."
-                      class="w-full rounded-full align-middle border-none shadow-lg"
-                      src="../../assets/img/team-1-800x800.jpg"
-                  /></span>
-                </div>
-              </a>
-              <div
-                class="hidden bg-white text-base z-50 float-left py-2 list-none text-left rounded shadow-lg min-w-48"
-                id="user-dropdown"
-              >
-                <a
-                  href="#pablo"
-                  class="text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-blueGray-700"
-                  >Action</a
-                ><a
-                  href="#pablo"
-                  class="text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-blueGray-700"
-                  >Another action</a
-                ><a
-                  href="#pablo"
-                  class="text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-blueGray-700"
-                  >Something else here</a
-                >
-                <div
-                  class="h-0 my-2 border border-solid border-blueGray-100"
-                ></div>
-                <a
-                  href="#pablo"
-                  class="text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-blueGray-700"
-                  >Seprated link</a
-                >
-              </div>
+              
+              
+               
             </ul>
           </div>
         </nav>
-         <%@ page import="dao.QuizDAO, model.Quiz,java.util.*" %>
+         <%@ page import="dao.QuizDAO, model.Quiz,dao.CertificatDAO, model.Certificat,java.util.*" %>
                      <% 
+                     String email=(String) ses.getAttribute("email");
                      QuizDAO quizDAO2 = new QuizDAO();
-             		
-            		String email=(String) ses.getAttribute("email");
-            		List<Quiz> listquiz =  quizDAO2.selectQuiz(email) ;
-            		int nbquiz=listquiz.size();
-            		int nbqst=nbquiz*8;
-            		Iterator<Quiz> iter = listquiz.iterator();
-            		%>
+                     CertificatDAO CertificatDAO2 = new CertificatDAO();
+                     List<Certificat> listCertificat =  CertificatDAO2.selectCertificat(email) ;
+                     Iterator<Certificat> iter1 = listCertificat.iterator();
+                     int nbClic=quizDAO2.CountNBClic(email);
+            		 List<Quiz> listquiz =  quizDAO2.selectQuiz5(email) ;
+            		 int nbquiz=listquiz.size();
+            		 int nbCert= listCertificat.size();
+            		 int nbqst=nbquiz*8;
+            		 Iterator<Quiz> iter = listquiz.iterator();
+            		 %>
         <!-- Header -->
-        <div class="relative bg-pink-600 md:pt-32 pb-32 pt-12">
+        <div class="relative  md:pt-32 pb-32 pt-12" style="background-color:#a0c5e9;">
           <div class="px-4 md:px-10 mx-auto w-full">
             <div>
               <!-- Card stats -->
@@ -141,7 +107,7 @@
                           <div
                             class="text-white p-3 text-center inline-flex items-center justify-center w-12 h-12 shadow-lg rounded-full bg-red-500"
                           >
-                            <i class="far fa-chart-bar"></i>
+                           <i class="fas fa-brain"></i>
                           </div>
                         </div>
                       </div>
@@ -172,7 +138,7 @@
                           <div
                             class="text-white p-3 text-center inline-flex items-center justify-center w-12 h-12 shadow-lg rounded-full bg-orange-500"
                           >
-                            <i class="fas fa-chart-pie"></i>
+                           <i class="fas fa-question-circle"></i>
                           </div>
                         </div>
                       </div>
@@ -195,14 +161,14 @@
                             Nb etudiants
                           </h5>
                           <span class="font-semibold text-xl text-blueGray-700">
-                            0
+                            <%=nbClic %>
                           </span>
                         </div>
                         <div class="relative w-auto pl-4 flex-initial">
                           <div
                             class="text-white p-3 text-center inline-flex items-center justify-center w-12 h-12 shadow-lg rounded-full bg-pink-500"
                           >
-                            <i class="fas fa-users"></i>
+                           <i class="fas fa-user-graduate"></i>
                           </div>
                         </div>
                       </div>
@@ -225,14 +191,14 @@
                             NB Certificats
                           </h5>
                           <span class="font-semibold text-xl text-blueGray-700">
-                            0
+                            <%=nbCert %>
                           </span>
                         </div>
                         <div class="relative w-auto pl-4 flex-initial">
                           <div
                             class="text-white p-3 text-center inline-flex items-center justify-center w-12 h-12 shadow-lg rounded-full bg-lightBlue-500"
                           >
-                            <i class="fas fa-percent"></i>
+                           <i class="fas fa-certificate"></i>
                           </div>
                         </div>
                       </div>
@@ -280,12 +246,14 @@
                     <div
                       class="relative w-full px-4 max-w-full flex-grow flex-1 text-right"
                     >
+                    <a href="lisQuiz.jsp">
                       <button
                         class="bg-indigo-500 text-white active:bg-indigo-600 text-xs font-bold uppercase px-3 py-1 rounded outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
                         type="button"
                       >
                         See all
                       </button>
+                      </a>
                     </div>
                   </div>
                 </div>
@@ -347,8 +315,105 @@
                         <td
                           class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
                         >
-                          <i class="fas fa-arrow-up text-emerald-500 mr-4"></i>
+                          
                           8 questiion
+                        </td>
+                      </tr>
+                       <%} %> 
+                     
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+           
+          </div>
+         <div class="flex flex-wrap mt-4">
+            <div class="w-full xl:w-8/12 mb-12 xl:mb-0 px-4">
+              <div
+                class="relative flex flex-col min-w-0 break-words bg-white w-full mb-6 shadow-lg rounded"
+              >
+                <div class="rounded-t mb-0 px-4 py-3 border-0">
+                  <div class="flex flex-wrap items-center">
+                    <div
+                      class="relative w-full px-4 max-w-full flex-grow flex-1"
+                    >
+                      <h3 class="font-semibold text-base text-blueGray-700">
+                        Liste des certificats fournis
+                      </h3>
+                    </div>
+                    <div
+                      class="relative w-full px-4 max-w-full flex-grow flex-1 text-right"
+                    >
+                      <button
+                        class="bg-indigo-500 text-white active:bg-indigo-600 text-xs font-bold uppercase px-3 py-1 rounded outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                        type="button"
+                      >
+                        See all
+                      </button>
+                    </div>
+                  </div>
+                </div>
+                <div class="block w-full overflow-x-auto">
+                  <!-- Projects table -->
+                  <table
+                    class="items-center w-full bg-transparent border-collapse"
+                  >
+                    <thead>
+                      <tr>
+                        <th
+                          class="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left"
+                        >
+                          Id certificat
+                        </th>
+                        <th
+                          class="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left"
+                        >
+                          Sujet
+                        </th>
+                        <th
+                          class="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left"
+                        >
+                          Niveau
+                        </th>
+                        <th
+                          class="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left"
+                        >
+                          email etudinat
+                        </th>
+                      </tr>
+                    </thead>
+                    
+                    <tbody>
+                  
+            		
+                    <% while(iter1.hasNext()){
+                    	Certificat cert = iter1.next();
+                    	%>
+                    
+               
+                      <tr>
+                     
+                        <th
+                          class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left"
+                        >
+                          <%=cert.getId() %>
+                        </th>
+                        <td
+                          class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
+                        >
+                          <%=cert.getSujet() %>
+                        </td>
+                        <td
+                          class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
+                        >
+                          <%=cert.getNiveau_quiz()%>
+                        </td>
+                        <td
+                          class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
+                        >
+                          
+                          <%=cert.getEmailuser() %>
                         </td>
                       </tr>
                        <%} %> 
@@ -364,6 +429,10 @@
         </div>
       </div>
     </div>
+        </div>
+      </div>
+    </div>
+    
     <script
       src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js"
       charset="utf-8"

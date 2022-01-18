@@ -19,6 +19,8 @@ public class UserDAO {
 			+ " (?, ?,? ,?);";
 	private static final String select_QuizS_SQL = "SELECT * FROM utilisateur where email =? and mot_de_passe=?";
 	private static final String select_user_SQL = "SELECT nom FROM utilisateur where email =? ";
+	private static final String select_user_SQL1= "SELECT * FROM utilisateur where email =? ";
+	private static final String Is_user_prof = "SELECT * FROM utilisateur where email =? and role=? ";
 
 	
 
@@ -58,6 +60,7 @@ public class UserDAO {
 	}
 	public User se_connecter(String email,String mot_de_passe) throws SQLException {
 		System.out.println(INSERT_USERS_SQL);
+		
 		// try-with-resource statement will auto close the connection.
 		try (Connection connection = getConnection();
 				PreparedStatement preparedStatement = connection.prepareStatement(select_QuizS_SQL)) {
@@ -66,7 +69,7 @@ public class UserDAO {
 			ResultSet rs = preparedStatement.executeQuery();
 		    if(rs.next())
 		    {
-		    	User user=new User(rs.getInt("id"),rs.getString("nom"),rs.getString("email"),rs.getString("mot_de_passe"),rs.getString("role")) ;
+		    	User user=new User(rs.getString("nom"),rs.getString("email"),rs.getString("mot_de_passe"),rs.getString("role")) ;
 		    	return user;
 		    }
 		    else
@@ -83,7 +86,45 @@ public class UserDAO {
 		
 	}
 	
+	public boolean is_Prof(String email)throws SQLException{
+		String prof="Professeur";
+		try (Connection connection = getConnection();
+		PreparedStatement preparedStatement = connection.prepareStatement(Is_user_prof)) {
+	preparedStatement.setString(1, email);
+	preparedStatement.setString(2, prof);
 	
+	ResultSet rs = preparedStatement.executeQuery();
+    if(rs.next())
+    {
+    	return true;
+    }
+   
+    }catch(Exception e) {
+    	System.out.println(e.getMessage());
+    }
+    
+	return false;
+	}
+	public User selectProf(String email)throws SQLException{
+		
+		try (Connection connection = getConnection();
+		PreparedStatement preparedStatement = connection.prepareStatement(select_user_SQL1)) {
+	preparedStatement.setString(1, email);
+	
+	
+	ResultSet rs = preparedStatement.executeQuery();
+    if(rs.next())
+    {
+    	User user=new User(rs.getString("nom"),rs.getString("email"),rs.getString("mot_de_passe"),rs.getString("role")) ;
+    	return user;
+    }
+   
+    }catch(Exception e) {
+    	System.out.println(e.getMessage());
+    }
+    
+	return null;
+	}
 	private void printSQLException(SQLException ex) {
 		for (Throwable e : ex) {
 			if (e instanceof SQLException) {

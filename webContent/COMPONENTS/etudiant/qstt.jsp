@@ -21,12 +21,12 @@
 }
 
 body{
-    background: #007bff;
+    background: #f8e8a2;
 }
 
 ::selection{
     color: #fff;
-    background: #007bff;
+    background: #99c2ec;
 }
 
 .start_btn,
@@ -53,7 +53,7 @@ body{
 .start_btn button{
     font-size: 25px;
     font-weight: 500;
-    color: #007bff;
+    color: #99c2ec;
     padding: 15px 30px;
     outline: none;
     border: none;
@@ -95,7 +95,7 @@ body{
 
 .info_box .info-list .info span{
     font-weight: 600;
-    color: #007bff;
+    color: #99c2ec;
 }
 .info_box .buttons{
     height: 60px;
@@ -116,7 +116,7 @@ body{
     border: none;
     outline: none;
     border-radius: 5px;
-    border: 1px solid #007bff;
+    border: 1px solid #99c2ec;
     transition: all 0.3s ease;
 }
 
@@ -186,7 +186,7 @@ body{
     bottom: 0px;
     left: 0px;
     height: 3px;
-    background: #007bff;
+    background: #99c2ec;
 }
 
 section{
@@ -300,8 +300,8 @@ footer button{
     outline: none;
     color: #fff;
     border-radius: 5px;
-    background: #007bff;
-    border: 1px solid #007bff;
+    background: #99c2ec;
+    border: 1px solid #99c2ec;
     line-height: 10px;
     opacity: 0;
     pointer-events: none;
@@ -336,7 +336,7 @@ footer button.show{
 
 .result_box .icon{
     font-size: 100px;
-    color: #007bff;
+    color: #99c2ec;
     margin-bottom: 10px;
 }
 
@@ -372,13 +372,13 @@ footer button.show{
     border: none;
     outline: none;
     border-radius: 5px;
-    border: 1px solid #007bff;
+    border: 1px solid #99c2ec;
     transition: all 0.3s ease;
 }
 
 .buttons button.restart{
     color: #fff;
-    background: #007bff;
+    background: #99c2ec;
 }
 
 .buttons button.restart:hover{
@@ -386,41 +386,49 @@ footer button.show{
 }
 
 .buttons button.quit{
-    color: #007bff;
+    color: #99c2ec;
     background: #fff;
 }
 
 .buttons button.quit:hover{
     color: #fff;
-    background: #007bff;
+    background: #99c2ec;
 }
 </style>
 <body>
     <!-- start Quiz button -->
-    <div class="start_btn"><button>Start Quiz</button></div>
+    <div class="start_btn"><button>Commencer Quiz</button></div>
 
     <!-- Info Box -->
     <div class="info_box">
-        <div class="info-title"><span>Some Rules of this Quiz</span></div>
+     <%@ page import="dao.QuizDAO, model.Quiz,java.util.*" %>
+    <%
+    int id=  (int)request.getAttribute("id");
+    QuizDAO quizDAO2 = new QuizDAO();
+    quizDAO2.updateNbClic(id);
+    System.out.println(id);
+         
+    %>
+        <div class="info-title"><span>Quelques règles de ce quiz</span></div>
         <div class="info-list">
-            <div class="info">1. You will have only <span>15 seconds</span> per each question.</div>
-            <div class="info">2. Once you select your answer, it can't be undone.</div>
-            <div class="info">3. You can't select any option once time goes off.</div>
-            <div class="info">4. You can't exit from the Quiz while you're playing.</div>
-            <div class="info">5. You'll get points on the basis of your correct answers.</div>
+            <div class="info">1.Vous n'aurez que <span>15 secondes</span> pour chaque question.</div>
+            <div class="info">2. Une fois que vous avez sélectionné votre réponse, elle ne peut pas être annulée.</div>
+            <div class="info">3. Vous ne pouvez sélectionner aucune option une fois que le temps s'est écoulé.</div>
+            <div class="info">4. Vous ne pouvez pas quitter le Quiz pendant que vous jouez.</div>
+            <div class="info">5. Vous obtiendrez des points sur la base de vos bonnes réponses.</div>
         </div>
         <div class="buttons">
-            <button class="quit">Exit Quiz</button>
-            <button class="restart">Continue</button>
+            <button class="quit">Quitter Quiz</button>
+            <button class="restart">Continuer</button>
         </div>
     </div>
 
     <!-- Quiz Box -->
     <div class="quiz_box">
         <header>
-            <div class="title">Awesome Quiz Application</div>
+            <div class="title">Testez Vous</div>
             <div class="timer">
-                <div class="time_left_txt">Time Left</div>
+                <div class="time_left_txt">Temps restant</div>
                 <div class="timer_sec">15</div>
             </div>
             <div class="time_line"></div>
@@ -439,7 +447,7 @@ footer button.show{
             <div class="total_que">
                 <!-- Here I've inserted Question Count Number from JavaScript -->
             </div>
-            <button class="next_btn">Next Que</button>
+            <button class="next_btn">Suivant</button>
         </footer>
     </div>
 
@@ -448,18 +456,43 @@ footer button.show{
         <div class="icon">
             <i class="fas fa-crown"></i>
         </div>
-        <div class="complete_text">You've completed the Quiz!</div>
+        <div class="complete_text">Vous avez terminé le Quiz!</div>
         <div class="score_text">
             <!-- Here I've inserted Score Result from JavaScript -->
         </div>
         <div class="buttons">
-            <button class="restart">Replay Quiz</button>
-            <button class="quit">Quit Quiz</button>
+            <button class="restart">Recommencer Quiz</button>
+            <button class="quit">Quitter </button>
+           
         </div>
     </div>
 
     <script>
   //selecting all required elements
+  var x=0;
+document.addEventListener("visibilitychange", function() {
+	console.log(x);
+	  if (document.visibilityState === 'visible') {
+	    
+	  } else {
+	    x++;
+	    if(x<4){
+	    alert("Vous avez changer l'onglet pour la "+x+"fois, si vous depassez 3 fois vous quittez le test");
+	    }
+	  }
+	  if(x>3){
+		  var result = confirm("vous avez quitter la page plus de 3 fois ");
+
+          if(result)  {
+        	  window.location.reload();
+          } else {
+        	  window.location.reload();
+        	  window.open("http://localhost:8082/ghujhikjl/");
+          }
+		  
+		  
+	  }
+	});
   console.log("salaam");
     const start_btn = document.querySelector(".start_btn");
     const info_box = document.querySelector(".info_box");
@@ -471,10 +504,18 @@ footer button.show{
     const time_line = document.querySelector("header .time_line");
     const timeText = document.querySelector(".timer .time_left_txt");
     const timeCount = document.querySelector(".timer .timer_sec");
+    const restart_btn = document.querySelector(".restart");
 
     // if startQuiz button clicked
     start_btn.onclick = ()=>{
         info_box.classList.add("activeInfo"); //show info box
+    }
+    function addClic() {
+        console.log(userScore);
+
+        let url = "<%= request.getContextPath() %>/CertificatServlet" ;
+        fetch(url, { method: "GET" })
+            .then((res) => console.log("tssifti Updated ", res.status))
     }
 
     // if exitQuiz button clicked
@@ -502,9 +543,14 @@ footer button.show{
 
     const restart_quiz = result_box.querySelector(".buttons .restart");
     const quit_quiz = result_box.querySelector(".buttons .quit");
-
+    restart_quiz.onclick=() =>{
+    	redirectCertificat();
+    }
     // if restartQuiz button clicked
     restart_quiz.onclick = ()=>{
+    	if( restart_quiz.innerText === "telecharger certificat"){
+    		redirectCertificat();
+    	}else{
         quiz_box.classList.add("activeQuiz"); //show quiz box
         result_box.classList.remove("activeResult"); //hide result box
         timeValue = 15; 
@@ -520,6 +566,7 @@ footer button.show{
         startTimerLine(widthValue); //calling startTimerLine function
         timeText.textContent = "Time Left"; //change the text of timeText to Time Left
         next_btn.classList.remove("show"); //hide the next button
+    	}
     }
 
     // if quitQuiz button clicked
@@ -558,8 +605,7 @@ footer button.show{
         let que_tag = '<span>'+ questions[index].numb + ". " + questions[index].question +'</span>';
         let option_tag = '<div class="option"><span>'+ questions[index].options[0] +'</span></div>'
         + '<div class="option"><span>'+ questions[index].options[1] +'</span></div>'
-        + '<div class="option"><span>'+ questions[index].options[2] +'</span></div>'
-        + '<div class="option"><span>'+ questions[index].options[3] +'</span></div>';
+        + '<div class="option"><span>'+ questions[index].options[2] +'</span></div>';
         que_text.innerHTML = que_tag; //adding new span tag inside que_tag
         option_list.innerHTML = option_tag; //adding new div tag inside option_tag
         
@@ -612,12 +658,14 @@ footer button.show{
         quiz_box.classList.remove("activeQuiz"); //hide quiz box
         result_box.classList.add("activeResult"); //show result box
         const scoreText = result_box.querySelector(".score_text");
-        if (userScore > 3){ // if user scored more than 3
+        if (userScore > 5){ // if user scored more than 3
             //creating a new span tag and passing the user score number and total question number
             let scoreTag = '<span>and congrats! 🎉, You got <p>'+ userScore +'</p> out of <p>'+ questions.length +'</p></span>';
             scoreText.innerHTML = scoreTag;  //adding new span tag inside score_Text
+            restart_quiz.innerText = "telecharger certificat";
+            
         }
-        else if(userScore > 1){ // if user scored more than 1
+        else if(userScore > 3){ // if user scored more than 1
             let scoreTag = '<span>and nice 😎, You got <p>'+ userScore +'</p> out of <p>'+ questions.length +'</p></span>';
             scoreText.innerHTML = scoreTag;
         }
@@ -626,7 +674,12 @@ footer button.show{
             scoreText.innerHTML = scoreTag;
         }
     }
+    function redirectCertificat() {
+        console.log(userScore);
 
+        let url = "<%= request.getContextPath() %>/CertificatServlet";
+        window.open(url);
+    }
     function startTimer(time){
         counter = setInterval(timer, 1000);
         function timer(){

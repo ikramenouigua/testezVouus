@@ -1,3 +1,108 @@
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+    pageEncoding="ISO-8859-1"%>
+    
+    <%@page import="java.sql.*" %>
+    
+       <%!
+// Basic declarations
+String DRIVER = "com.mysql.jdbc.Driver";
+String URL = "jdbc:mysql://localhost:3306/testezvous";
+String USERNAME = "root";
+double count;
+String PASSWORD = "";
+java.sql.Connection conn;
+java.sql.Statement st;
+java.sql.Statement stProf ,stQuiz,stSum,stSumPf,stC;
+java.sql.Statement prof;
+java.sql.ResultSet rec;
+%>
+
+<%
+try {
+	Class.forName(DRIVER);  // Allocate the driver class
+	conn =  DriverManager.getConnection(URL, USERNAME, PASSWORD); // Make a connection
+	st = conn.createStatement();  // Create the statement
+	
+	String name = request.getParameter("sname");
+	 String strQuery = "SELECT COUNT(*) FROM utilisateur where role='Etudiant' ";
+     ResultSet rs = st.executeQuery(strQuery);
+     String Countrow="";
+     while(rs.next() ){
+     Countrow = rs.getString(1);
+     }
+     String SQL = "SELECT * FROM utilisateur limit 10";
+ 	rec = st.executeQuery(SQL);
+ 	
+ 	
+ 	Class.forName(DRIVER);  // Allocate the driver class
+	conn =  DriverManager.getConnection(URL, USERNAME, PASSWORD); // Make a connection
+	stProf = conn.createStatement();  
+ 	String strQueryProf = "SELECT COUNT(*) FROM utilisateur where role='Professeur' ";
+ 	 ResultSet rsProf = stProf.executeQuery(strQueryProf);
+     String CountrowProf="";
+     while(rsProf.next() ){
+     CountrowProf = rsProf.getString(1);
+     }
+     
+     
+     count = Double.parseDouble(Countrow)/(Double.parseDouble(CountrowProf)+ Double.parseDouble(Countrow));
+     
+     
+     Class.forName(DRIVER);  // Allocate the driver class
+ 	conn =  DriverManager.getConnection(URL, USERNAME, PASSWORD); // Make a connection
+ 	stQuiz = conn.createStatement();  
+ 	stC = conn.createStatement();
+  	 String strQueryQuiz = "SELECT COUNT(*) FROM quiz";
+  	 String strQueryC = "SELECT COUNT(*) FROM certificat";
+  	 ResultSet rsQuiz = stQuiz.executeQuery(strQueryQuiz);
+  	ResultSet rsC = stC.executeQuery(strQueryC);
+      String CountrowQuiz="";
+      String CountrowC="";
+      while(rsQuiz.next() ){
+      CountrowQuiz = rsQuiz.getString(1);
+      }
+      while(rsC.next() ){
+          CountrowC = rsC.getString(1);
+          }
+      System.out.print(CountrowQuiz);
+      
+      String CountrunSum="";
+      try
+      {
+      Statement stSum=conn.createStatement();
+      String strQuerySum = "SELECT SUM(visit) FROM utilisateur where role='Etudiant'";
+      ResultSet rsSum = stSum.executeQuery(strQuerySum);
+     
+      while(rsSum.next()){
+      CountrunSum = rsSum.getString(1);
+      }
+      }
+      catch (Exception e){
+      e.printStackTrace();
+      }
+%>
+
+  <%
+  
+  String CountrunSumPf="";
+  try
+  {
+  Statement stSumPf=conn.createStatement();
+  String strQuerySumPf = "SELECT SUM(visit) FROM utilisateur where role='Professeur'";
+  ResultSet rsSumPf = stSumPf.executeQuery(strQuerySumPf);
+ 
+  while(rsSumPf.next()){
+	  CountrunSumPf = rsSumPf.getString(1);
+  }
+  }
+  catch (Exception e){
+  e.printStackTrace();
+  }
+
+%>   
+
+
+
 
 <!DOCTYPE html>
 <html>
@@ -40,13 +145,13 @@
           </button>
           <a
             class="md:block text-left md:pb-2 text-blueGray-600 mr-0 inline-block whitespace-nowrap text-sm uppercase font-bold p-4 px-0"
-            href="../../index.html"
+            href="./dashboard.jsp"
           >
               <img
                         alt="..."
                         src="../../images/logo.png"
-                        height ="80"
-                        width="80"
+                        height ="130"
+                        width="130"
                       />
           </a>
           <ul class="md:hidden items-center flex flex-wrap list-none">
@@ -170,38 +275,56 @@
             >
           
             </h6>
-            <!-- Navigation -->
+             <!-- Navigation -->
 
             <ul class="md:flex-col md:min-w-full flex flex-col list-none">
-              <li class="items-center">
+             <li class="items-center">
                 <a
-                  href="./dashboard.html"
+                  href="./dashboard.jsp"
                   class="text-xs uppercase py-3 font-bold block text-orange-500 hover:text-blueGray-500"
                 >
-                  <i class="fas fa-tv mr-2 text-sm opacity-75"></i>
-                  Administrateur du tableau de bord
+                  <i class="fas fa-chart-line mr-2 text-sm text-orange-500"></i>
+                 Administrateur du tableau de bord
+                </a>
+              </li>
+              <li class="items-center">
+                <a
+                   href="./users.jsp"
+                  class="text-xs uppercase py-3 font-bold block text-blueGray-700 hover:text-blueGray-500"
+                >
+                  <i class="fas fa-user-graduate mr-2 text-sm opacity-75"></i>
+                  Etudiants
+                </a>
+              </li>
+				 <li class="items-center">
+                <a
+                  href="./Prof.jsp"
+                  class="text-xs uppercase py-3 font-bold block text-blueGray-700 hover:text-blueGray-500"
+                >
+                  <i class="fas fa-chalkboard-teacher mr-2 text-sm text-blueGray-700"></i>
+                  Professeurs
+                </a>
+              </li>
+              <li class="items-center">
+                <a
+                   href="./certificat.jsp"
+                  class="text-xs uppercase py-3 font-bold block text-blueGray-700 hover:text-blueGray-500"
+                >
+                  <i class="fas fa-certificate mr-2 text-sm text-blueGray-700"></i>
+                   Certificate
+                </a>
+              </li>
+              <li class="items-center">
+                <a
+                   href="./confirm.jsp"
+                  class="text-xs uppercase py-3 font-bold block text-blueGray-700 hover:text-blueGray-500"
+                >
+                  <i class="fas fa-tools mr-2 text-sm text-blueGray-700"></i>
+                   Suppression des quiz
                 </a>
               </li>
 
-              <li class="items-center">
-                <a
-                  href="./settings.html"
-                  class="text-xs uppercase py-3 font-bold block text-blueGray-700 hover:text-blueGray-500"
-                >
-                  <i class="fas fa-tools mr-2 text-sm text-blueGray-300"></i>
-                  ParamÃ¨tres
-                </a>
-              </li>
-
-              <li class="items-center">
-                <a
-                  href="./tables.html"
-                  class="text-xs uppercase py-3 font-bold block text-blueGray-700 hover:text-blueGray-500"
-                >
-                  <i class="fas fa-table mr-2 text-sm text-blueGray-300"></i>
-                  Tableaux
-                </a>
-              </li>
+             
 
              
             </ul>
@@ -216,75 +339,13 @@
             </h6>
             <!-- Navigation -->
 
-            <ul
-              class="md:flex-col md:min-w-full flex flex-col list-none md:mb-4"
-            >
-              <li class="items-center">
-                <a
-                  href="../login.jsp"
-                  class="text-blueGray-700 hover:text-blueGray-500 text-xs uppercase py-3 font-bold block"
-                >
-                  <i
-                    class="fas fa-fingerprint text-blueGray-300 mr-2 text-sm"
-                  ></i>
-                  Login
-                </a>
-              </li>
-
-              <li class="items-center">
-                <a
-                  href="../register.jsp"
-                  class="text-blueGray-700 hover:text-blueGray-500 text-xs uppercase py-3 font-bold block"
-                >
-                  <i
-                    class="fas fa-clipboard-list text-blueGray-300 mr-2 text-sm"
-                  ></i>
-                  Register
-                </a>
-              </li>
-            </ul>
-
+          
             <!-- Divider -->
             <hr class="my-4 md:min-w-full" />
             <!-- Heading -->
-            <h6
-              class="md:min-w-full text-blueGray-500 text-xs uppercase font-bold block pt-1 pb-4 no-underline"
-            >
-              No Layout Pages
-            </h6>
-            <!-- Navigation -->
+           
 
-            <ul
-              class="md:flex-col md:min-w-full flex flex-col list-none md:mb-4"
-            >
-              <li class="items-center">
-                <a
-                  href="../landing.html"
-                  class="text-blueGray-700 hover:text-blueGray-500 text-xs uppercase py-3 font-bold block"
-                >
-                  <i
-                    class="fas fa-newspaper text-blueGray-300 mr-2 text-sm"
-                  ></i>
-                  Landing Page
-                </a>
-              </li>
-
-              <li class="items-center">
-                <a
-                  href="../profile.html"
-                  class="text-blueGray-700 hover:text-blueGray-500 text-xs uppercase py-3 font-bold block"
-                >
-                  <i
-                    class="fas fa-user-circle text-blueGray-300 mr-2 text-sm"
-                  ></i>
-                  Profile Page
-                </a>
-              </li>
-            </ul>
-
-            <!-- Divider -->
-            <hr class="my-4 md:min-w-full" />
-            <!-- Heading -->
+         
            
           </div>
         </div>
@@ -337,8 +398,9 @@
             
           </div>
         </nav>
-        
         <!-- Header -->
+        
+       
         <div class="relative bg-lightBlue-200 md:pt-32 pb-32 pt-12">
           <div class="px-4 md:px-10 mx-auto w-full">
             <div>
@@ -356,23 +418,23 @@
                           <h5
                             class="text-blueGray-400 uppercase font-bold text-xs"
                           >
-                            Ã‰tudiant
+                            Étudiant
                           </h5>
                           <span class="font-semibold text-xl text-blueGray-700">
-                            350,897
+                            <%=Countrow %>
                           </span>
                         </div>
                         <div class="relative w-auto pl-4 flex-initial">
                           <div
                             class="text-white p-3 text-center inline-flex items-center justify-center w-12 h-12 shadow-lg rounded-full bg-red-500"
                           >
-                            <i class="far fa-chart-bar"></i>
+                            <i class="fas fa-user-graduate"></i>
                           </div>
                         </div>
                       </div>
                       <p class="text-sm text-blueGray-400 mt-4">
                         <span class="text-emerald-500 mr-2">
-                          <i class="fas fa-arrow-up"></i> 3.48%
+                          <i class="fas fa-arrow-up"></i> <%=String.format("%.2f", count*100) %> %
                         </span>
                         <span class="whitespace-nowrap">
                          
@@ -396,20 +458,20 @@
                             Professeur
                           </h5>
                           <span class="font-semibold text-xl text-blueGray-700">
-                            2,356
+                          <%=CountrowProf %>
                           </span>
                         </div>
                         <div class="relative w-auto pl-4 flex-initial">
                           <div
                             class="text-white p-3 text-center inline-flex items-center justify-center w-12 h-12 shadow-lg rounded-full bg-orange-500"
                           >
-                            <i class="fas fa-chart-pie"></i>
+                            <i class="fas fa-chalkboard-teacher"></i>
                           </div>
                         </div>
                       </div>
                       <p class="text-sm text-blueGray-400 mt-4">
                         <span class="text-red-500 mr-2">
-                          <i class="fas fa-arrow-down"></i> 3.48%
+                          <i class="fas fa-arrow-down"></i> <%=String.format("%.2f", 100-count*100) %> %
                         </span>
                         <span class="whitespace-nowrap">  </span>
                       </p>
@@ -431,20 +493,20 @@
                             QUIZ
                           </h5>
                           <span class="font-semibold text-xl text-blueGray-700">
-                            924
+                           <%=CountrowQuiz %>
                           </span>
                         </div>
                         <div class="relative w-auto pl-4 flex-initial">
                           <div
                             class="text-white p-3 text-center inline-flex items-center justify-center w-12 h-12 shadow-lg rounded-full bg-pink-500"
                           >
-                            <i class="fas fa-users"></i>
+                            <i class="fas fa-brain"></i>
                           </div>
                         </div>
                       </div>
                       <p class="text-sm text-blueGray-400 mt-4">
                         <span class="text-orange-500 mr-2">
-                          <i class="fas fa-arrow-down"></i> 1.10%
+                          
                         </span>
                         <span class="whitespace-nowrap">  </span>
                       </p>
@@ -466,20 +528,19 @@
                             Certificat
                           </h5>
                           <span class="font-semibold text-xl text-blueGray-700">
-                            49,65%
+                           <%=CountrowC %>
                           </span>
                         </div>
                         <div class="relative w-auto pl-4 flex-initial">
                           <div
                             class="text-white p-3 text-center inline-flex items-center justify-center w-12 h-12 shadow-lg rounded-full bg-lightBlue-500"
                           >
-                            <i class="fas fa-percent"></i>
+                            <i class="fas fa-certificate"></i>
                           </div>
                         </div>
                       </div>
                       <p class="text-sm text-blueGray-400 mt-4">
                         <span class="text-emerald-500 mr-2">
-                          <i class="fas fa-arrow-up"></i> 12%
                         </span>
                         <span class="whitespace-nowrap">
                           
@@ -493,64 +554,12 @@
           </div>
         </div>
         
+       
+        
         <br>  <br>
         <br>  <br>
         <br>  <br>
-        <div class="px-4 md:px-10 mx-auto w-full -m-24">
-          <div class="flex flex-wrap">
-            <div class="w-full xl:w-8/12 mb-12 xl:mb-0 px-4">
-              <div
-                class="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded bg-lightBlue-400"
-              >
-                <div class="rounded-t mb-0 px-4 py-3 bg-transparent">
-                  <div class="flex flex-wrap items-center">
-                    <div class="relative w-full max-w-full flex-grow flex-1">
-                      <h6
-                        class="uppercase text-blueGray-100 mb-1 text-xs font-semibold"
-                      >
-                        Overview
-                      </h6>
-                      <h2 class="text-white text-xl font-semibold">
-                        Sales value
-                      </h2>
-                    </div>
-                  </div>
-                </div>
-                <div class="p-4 flex-auto">
-                  <!-- Chart -->
-                  <div class="relative h-350-px">
-                    <canvas id="line-chart"></canvas>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="w-full xl:w-4/12 px-4">
-              <div
-                class="relative flex flex-col min-w-0 break-words bg-white w-full mb-6 shadow-lg rounded"
-              >
-                <div class="rounded-t mb-0 px-4 py-3 bg-transparent">
-                  <div class="flex flex-wrap items-center">
-                    <div class="relative w-full max-w-full flex-grow flex-1">
-                      <h6
-                        class="uppercase text-blueGray-400 mb-1 text-xs font-semibold"
-                      >
-                        Performance
-                      </h6>
-                      <h2 class="text-blueGray-700 text-xl font-semibold">
-                        Total orders
-                      </h2>
-                    </div>
-                  </div>
-                </div>
-                <div class="p-4 flex-auto">
-                  <!-- Chart -->
-                  <div class="relative h-350-px">
-                    <canvas id="bar-chart"></canvas>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+       
           <div class="flex flex-wrap mt-4">
             <div class="w-full xl:w-8/12 mb-12 xl:mb-0 px-4">
               <div
@@ -562,24 +571,30 @@
                       class="relative w-full px-4 max-w-full flex-grow flex-1"
                     >
                       <h3 class="font-semibold text-base text-blueGray-700">
-                        Page visits
+                       Utilisateurs
                       </h3>
                     </div>
                     <div
                       class="relative w-full px-4 max-w-full flex-grow flex-1 text-right"
                     >
-                      <button
+                      <a
+                      href="/testez8/COMPONENTS/admin/users.jsp"
                         class="bg-indigo-500 text-white active:bg-indigo-600 text-xs font-bold uppercase px-3 py-1 rounded outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
                         type="button"
                       >
                         See all
-                      </button>
+                      </a>
                     </div>
                   </div>
                 </div>
                 <div class="block w-full overflow-x-auto">
                   <!-- Projects table -->
-                  <table
+                  
+                  
+       <!-- Projects table -->
+                  
+                  
+<table
                     class="items-center w-full bg-transparent border-collapse"
                   >
                     <thead>
@@ -587,147 +602,68 @@
                         <th
                           class="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left"
                         >
-                          Page name
+                          Nom complet
                         </th>
                         <th
                           class="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left"
                         >
-                          Visitors
+                          Email
                         </th>
                         <th
                           class="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left"
                         >
-                          Unique users
+                          Role
                         </th>
                         <th
                           class="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left"
                         >
-                          Bounce rate
+                          VISITE
                         </th>
                       </tr>
                     </thead>
-                    <tbody>
+                    
+				<%
+					while(rec.next()) { 
+				%>
+				<tbody>
                       <tr>
                         <th
                           class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left"
                         >
-                          /argon/
+                          <%=rec.getString("nom") %>
                         </th>
                         <td
                           class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
                         >
-                          4,569
+                         <%=rec.getString("email") %>
                         </td>
                         <td
                           class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
                         >
-                          340
+                          <%=rec.getString("role") %>
                         </td>
                         <td
                           class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
                         >
                           <i class="fas fa-arrow-up text-emerald-500 mr-4"></i>
-                          46,53%
+                          <%=rec.getString("visit") %>
                         </td>
                       </tr>
-                      <tr>
-                        <th
-                          class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left"
-                        >
-                          /argon/index.html
-                        </th>
-                        <td
-                          class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
-                        >
-                          3,985
-                        </td>
-                        <td
-                          class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
-                        >
-                          319
-                        </td>
-                        <td
-                          class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
-                        >
-                          <i class="fas fa-arrow-down text-orange-500 mr-4"></i>
-                          46,53%
-                        </td>
-                      </tr>
-                      <tr>
-                        <th
-                          class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left"
-                        >
-                          /argon/charts.html
-                        </th>
-                        <td
-                          class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
-                        >
-                          3,513
-                        </td>
-                        <td
-                          class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
-                        >
-                          294
-                        </td>
-                        <td
-                          class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
-                        >
-                          <i class="fas fa-arrow-down text-orange-500 mr-4"></i>
-                          36,49%
-                        </td>
-                      </tr>
-                      <tr>
-                        <th
-                          class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left"
-                        >
-                          /argon/tables.html
-                        </th>
-                        <td
-                          class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
-                        >
-                          2,050
-                        </td>
-                        <td
-                          class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
-                        >
-                          147
-                        </td>
-                        <td
-                          class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
-                        >
-                          <i class="fas fa-arrow-up text-emerald-500 mr-4"></i>
-                          50,87%
-                        </td>
-                      </tr>
-                      <tr>
-                        <th
-                          class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left"
-                        >
-                          /argon/profile.html
-                        </th>
-                        <td
-                          class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
-                        >
-                          1,795
-                        </td>
-                        <td
-                          class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
-                        >
-                          190
-                        </td>
-                        <td
-                          class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
-                        >
-                          <i class="fas fa-arrow-down text-red-500 mr-4"></i>
-                          46,53%
-                        </td>
-                      </tr>
+                      
                     </tbody>
-                  </table>
+                    
+<%
+}
+%>
+</table>
+
+                  
+               
                 </div>
               </div>
             </div>
-            <div class="w-full xl:w-4/12 px-4">
+            </div>
+            <div class="w-full xl:w-8/12 px-4">
               <div
                 class="relative flex flex-col min-w-0 break-words bg-white w-full mb-6 shadow-lg rounded"
               >
@@ -737,18 +673,13 @@
                       class="relative w-full px-4 max-w-full flex-grow flex-1"
                     >
                       <h3 class="font-semibold text-base text-blueGray-700">
-                        Social traffic
+                        Catégories
                       </h3>
                     </div>
                     <div
                       class="relative w-full px-4 max-w-full flex-grow flex-1 text-right"
                     >
-                      <button
-                        class="bg-indigo-500 text-white active:bg-indigo-600 text-xs font-bold uppercase px-3 py-1 rounded outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
-                        type="button"
-                      >
-                        See all
-                      </button>
+                      
                     </div>
                   </div>
                 </div>
@@ -767,7 +698,7 @@
                         <th
                           class="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left"
                         >
-                          Visitors
+                          
                         </th>
                         <th
                           class="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left min-w-140-px"
@@ -779,24 +710,25 @@
                         <th
                           class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left"
                         >
-                          Facebook
+                          ÉTUDIANT
                         </th>
                         <td
                           class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
                         >
-                          1,480
+                           <%=CountrunSum %> Nombre de visites
                         </td>
                         <td
                           class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
                         >
                           <div class="flex items-center">
-                            <span class="mr-2">60%</span>
+                            <span class="mr-2"> <%=String.format("%.2f", count*100) %>%</span>
                             <div class="relative w-full">
                               <div
                                 class="overflow-hidden h-2 text-xs flex rounded bg-red-200"
                               >
                                 <div
-                                  style="width: 60%"
+                                	id="luv"
+                                  
                                   class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-red-500"
                                 ></div>
                               </div>
@@ -808,24 +740,24 @@
                         <th
                           class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left"
                         >
-                          Facebook
+                          PROFESSEUR
                         </th>
                         <td
                           class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
                         >
-                          5,480
+                           <%=CountrunSumPf %> Nombre de visites
                         </td>
                         <td
                           class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
                         >
                           <div class="flex items-center">
-                            <span class="mr-2">70%</span>
+                            <span class="mr-2"><%=String.format("%.2f", 100-count*100) %>%</span>
                             <div class="relative w-full">
                               <div
                                 class="overflow-hidden h-2 text-xs flex rounded bg-emerald-200"
                               >
                                 <div
-                                  style="width: 70%"
+                                  id="luv2"
                                   class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-emerald-500"
                                 ></div>
                               </div>
@@ -837,89 +769,37 @@
                         <th
                           class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left"
                         >
-                          Google
+                          QUIZ
                         </th>
                         <td
                           class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
                         >
-                          4,807
+                          <%=CountrowQuiz %> Nombre de Quiz
                         </td>
                         <td
                           class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
                         >
-                          <div class="flex items-center">
-                            <span class="mr-2">80%</span>
-                            <div class="relative w-full">
-                              <div
-                                class="overflow-hidden h-2 text-xs flex rounded bg-purple-200"
-                              >
-                                <div
-                                  style="width: 80%"
-                                  class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-purple-500"
-                                ></div>
-                              </div>
-                            </div>
-                          </div>
+                         
                         </td>
                       </tr>
                       <tr>
                         <th
                           class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left"
                         >
-                          Instagram
+                          CERTIFICAT
                         </th>
                         <td
                           class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
                         >
-                          3,678
+                          <%=CountrowC %> Nombre de Certificats
                         </td>
                         <td
                           class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
                         >
-                          <div class="flex items-center">
-                            <span class="mr-2">75%</span>
-                            <div class="relative w-full">
-                              <div
-                                class="overflow-hidden h-2 text-xs flex rounded bg-lightBlue-200"
-                              >
-                                <div
-                                  style="width: 75%"
-                                  class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-lightBlue-500"
-                                ></div>
-                              </div>
-                            </div>
-                          </div>
+                        
                         </td>
                       </tr>
-                      <tr>
-                        <th
-                          class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left"
-                        >
-                          twitter
-                        </th>
-                        <td
-                          class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
-                        >
-                          2,645
-                        </td>
-                        <td
-                          class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
-                        >
-                          <div class="flex items-center">
-                            <span class="mr-2">30%</span>
-                            <div class="relative w-full">
-                              <div
-                                class="overflow-hidden h-2 text-xs flex rounded bg-orange-200"
-                              >
-                                <div
-                                  style="width: 30%"
-                                  class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-emerald-500"
-                                ></div>
-                              </div>
-                            </div>
-                          </div>
-                        </td>
-                      </tr>
+                     
                     </tbody>
                   </table>
                 </div>
@@ -936,12 +816,12 @@
                   <div
                     class="text-sm text-blueGray-500 font-semibold py-1 text-center md:text-left"
                   >
-                    Copyright Â© <span id="get-current-year"></span>
+                    Copyright © <span id="get-current-year"></span>
                     <a
                       href="https://www.creative-tim.com?ref=njs-dashboard"
                       class="text-blueGray-500 hover:text-blueGray-700 text-sm font-semibold py-1"
                     >
-                      Creative Tim
+                      HOUDA JOUHAR && IKRAME NOUIGUA
                     </a>
                   </div>
                 </div>
@@ -954,33 +834,10 @@
                         href="https://www.creative-tim.com?ref=njs-dashboard"
                         class="text-blueGray-600 hover:text-blueGray-800 text-sm font-semibold block py-1 px-3"
                       >
-                        Creative Tim
+                        HOUDA JOUHAR && IKRAME NOUIGUA
                       </a>
                     </li>
-                    <li>
-                      <a
-                        href="https://www.creative-tim.com/presentation?ref=njs-dashboard"
-                        class="text-blueGray-600 hover:text-blueGray-800 text-sm font-semibold block py-1 px-3"
-                      >
-                        About Us
-                      </a>
-                    </li>
-                    <li>
-                      <a
-                        href="http://blog.creative-tim.com?ref=njs-dashboard"
-                        class="text-blueGray-600 hover:text-blueGray-800 text-sm font-semibold block py-1 px-3"
-                      >
-                        Blog
-                      </a>
-                    </li>
-                    <li>
-                      <a
-                        href="https://github.com/creativetimofficial/notus-js/blob/main/LICENSE.md?ref=njs-dashboard"
-                        class="text-blueGray-600 hover:text-blueGray-800 text-sm font-semibold block py-1 px-3"
-                      >
-                        MIT License
-                      </a>
-                    </li>
+                   
                   </ul>
                 </div>
               </div>
@@ -989,12 +846,29 @@
         </div>
       </div>
     </div>
+    <%
+} catch(Exception e) {
+	out.println("<p style=\"color:red\">Exception: " + e + "Occurred in: " + 
+				e.getStackTrace()[0].getFileName() + ":" + e.getStackTrace()[0].getLineNumber() + "</p>");
+	// You can comment out the following line to not go the 500 server error page.
+	// throw e;
+} finally {
+	// Make sure you close only things you have opened!
+	if (rec!=null) rec.close();
+	if (st !=null) st.close();
+	if (conn !=null) conn.close();
+}
+%>
+
     <script
       src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js"
       charset="utf-8"
     ></script>
     <script src="https://unpkg.com/@popperjs/core@2/dist/umd/popper.js"></script>
     <script type="text/javascript">
+    <% double x = count*100 ; %>
+    document.getElementById('luv').style.width = <%=x%> + "%";
+    document.getElementById('luv2').style.width = <%=100-x%> + "%";
       /* Make dynamic date appear */
       (function () {
         if (document.getElementById("get-current-year")) {
@@ -1229,3 +1103,4 @@
     </script>
   </body>
 </html>
+

@@ -23,6 +23,7 @@
     <div id="root">
 <%@ include file="navbar.jsp" %>
 <br><br><br><br><br><br><br>
+<div class="relative bg-pink-600 md:pt-32 pb-32 pt-12">
  <div class="px-40 md:px-10 mx-auto w-full -m-24">
           <div class="flex flex-wrap">
             <div class="w-full lg:w-8/12 px-4">

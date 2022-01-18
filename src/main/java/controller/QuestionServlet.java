@@ -16,6 +16,7 @@ import javax.servlet.http.HttpSession;
 import dao.QuestionDAO;
 import dao.QuizDAO;
 import model.Question;
+import model.Quiz;
 
 /**
  * Servlet implementation class QuestionServlet
@@ -38,10 +39,28 @@ public class QuestionServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		int id = Integer.parseInt(request.getParameter("id"));
-		QuestionDAO quizDAO2 = new QuestionDAO();
-		List<Question> qsts=quizDAO2.selectQuestions(id);
+		QuestionDAO questionDAO2 = new QuestionDAO();
+		QuizDAO quizDAO2 = new QuizDAO();
+		List<Question> qsts=questionDAO2.selectQuestions(id);
+		Quiz q1=null;
+		
+			try {
+				q1=quizDAO2.selectQuiz(id);
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		
 		String[][] tab= new String[8][5];
 		Iterator<Question> iter = qsts.iterator();
+		HttpSession ses= request.getSession(true);
+		String email=(String) ses.getAttribute("email");
+		ses.removeAttribute("idQuiz");
+    	ses.setAttribute("idQuiz", id);
+		System.out.println("ha huwa email");
+		System.out.println("ha huwa email"+email);
+		String nom=(String) ses.getAttribute("nom");
+		System.out.println("ha huwa email"+ nom);
 		int j=0;
 		while(iter.hasNext()){
         	Question qst = iter.next();
@@ -55,6 +74,7 @@ public class QuestionServlet extends HttpServlet {
 		RequestDispatcher dispatcher = request.getRequestDispatcher("COMPONENTS/etudiant/qstt.jsp");
 		request.setAttribute("qsts", qsts);
 		request.setAttribute("tab", tab);
+		request.setAttribute("id", id);
 		dispatcher.forward(request, response);
 	}
 
@@ -149,6 +169,7 @@ public class QuestionServlet extends HttpServlet {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		response.sendRedirect("COMPONENTS/prof/dashboard.jsp");
 	}
 
 }

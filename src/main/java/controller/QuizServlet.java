@@ -47,7 +47,12 @@ public void init() {
 	    response.sendRedirect("COMPONENTS/prof/dashboard.jsp");
 	
 	}
-
+	protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		System.out.println("salaam");
+		  int id = Integer.parseInt(request.getParameter("id"));
+		 
+	}
+	
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
@@ -64,7 +69,10 @@ public void init() {
 		HttpSession ses= request.getSession(true);
 		String email=(String) ses.getAttribute("email");
 		System.out.println("ha huwa email"+email);
-		Quiz newQuiz = new Quiz(sujet, desc,niveau,email);
+		String nom=(String) ses.getAttribute("nom");
+		System.out.println("ha huwa email"+ nom);
+		int x1=0;
+		Quiz newQuiz = new Quiz(sujet, desc,niveau,email,x1);
 		
 		
 		QuizDAO quizDAO2 = new QuizDAO();

@@ -12,6 +12,17 @@
 </head>
 <body>
 	<section id="demo">
+	 <a
+            class=" "
+            href="../../index.html"
+          >
+              <img
+                        alt="..."
+                        src="../../images/logo1.PNG"
+                        height ="120"
+                        width="120"
+                      />
+          </a>
 	    <div class="vertical-align">
 	        <div class="container">
 	            <div class="row">
@@ -19,23 +30,31 @@
 	                    <div class="card no-border">
 	                        <div id="chat" class="conv-form-wrapper">
 	                            <form action="" method="GET" class="hidden">
-	                                <select name="rep" data-conv-question="Bnjour cher utilisateur dans testez vous c'est le temps de tester vos connaissances dans la programation choisissez un language. " >
+	                              <input type="text"  data-conv-question="Bonjour dans notre plateforme testez vous "data-no-answer="true">
+	                               <input type="text"  data-conv-question="on vous aide a ameliorer vos competences dans les languages de programmation"data-no-answer="true">
+	                                <select name="rep" id="rep" data-conv-question="Alors c'est le temps de tester vos connaissances  choisissez un language. " >
 	                                    <option value="java">java</option>
 	                                   <option value="PHP">PHP</option>
-	                                     <option value="JAVASCRIPT">JAVASCRIPT</option>
-	                                      <option value="JAVASCRIPT">PYTHON</option>
+	                                     <option value="JS">JAVASCRIPT</option>
+	                                      <option value="PYTHON">PYTHON</option>
 	                                </select>
-	                                <input type="text" name="name" data-conv-question="Bien!  D'abord, dites-moi votre nom complet, s'il vous plaît.|D'accord ! S'il te plaît, dis-moi d'abord ton nom.">
-	                                <input type="text" data-conv-question="bienvenue, {name}:0! C'est un plaisir de vous rencontrer. )" data-no-answer="true">
-	                                <
-	                                <select name="multi" data-conv-question="bon {name} quel est votre niveau dans ce language ?"  name="second-question">
+	                                <input type="text" name="name" data-conv-question="Bien!  D'abord, dites-moi votre nom complet, s'il vous plait.">
+	                                <input type="text" data-conv-question="bienvenue, {name}:0! C'est un plaisir de vous rencontrer. " data-no-answer="true">
+	                                
+	                                <select name="multi" id="multi" data-conv-question="bon {name} quel est votre niveau dans  language {rep}?"  name="second-question">
 	                                    <option value="debutant">Debutant</option>
-	                                    <option value="moyen">Moyen</option>
-	                                    <option value="bon">Bon niveau</option>
+	                                    <option value="intermidiaire">Intermidiaire</option>
+	                                    <option value="expert">Expert</option>
 	                                </select>  
-	                               <input type="text" name="name" data-conv-question="Excellent vous serez rediriger vers le quiz ."data-no-answer="true">
-	                               <input type="text" name="name" data-conv-question="on vous souhaite une excellente experience dans notre plateforme  ."data-no-answer="true">
-	                               <input type="text" name="name" data-conv-question="A bientot .">
+	                                
+	                               <input type="text"  data-conv-question="Excellent vous serez rediriger vers les quiz concernant votre choix ."data-no-answer="true">
+	                               <input type="text"  data-conv-question="on vous souhaite une excellente experience dans notre plateforme  ."data-no-answer="true">
+	                              
+	                               <select data-conv-question="Vous voulez vous rediriger vers nos quiz choisi pour vous" >?
+											<option value="ouii" data-callback="redirectQuiz" >Ouii</option>
+											<option value="non merci" data-callback="bing">Non merci</option>
+									</select>
+	                               
 	                            </form>
 	                        </div>
 	                    </div>
@@ -49,6 +68,15 @@
 	<script type="text/javascript" src="dist/jquery.convform.js"></script>
 
 	<script>
+	function redirectQuiz(stateWrapper, ready){
+		var language=document.getElementById('rep').value;
+		var niveau=document.getElementById('multi').value;
+		  
+		  
+	        let url = "<%= request.getContextPath() %>/ChatbotServlet?rep="+ language+"&niv="+niveau ;
+	        window.open(url);
+	        ready();
+	}
 		function google(stateWrapper, ready) {
 			window.open("https://google.com");
 			ready();
@@ -84,6 +112,7 @@
 			}
 			ready();
 		}
+		
 	</script>
 	<script>
 		jQuery(function($){

@@ -9,7 +9,7 @@
   --curve: 40;
 }
 
-.cards {
+.cards1 {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: 2rem;
@@ -28,12 +28,12 @@
   text-decoration: none;
 }
 
-.card__image {      
+.card__image1 {      
   width: 100%;
-  height: auto;
+  height: 60%;
 }
 
-.card__overlay {
+.card__overlay1 {
   position: absolute;
   bottom: 0;
   left: 0;
@@ -45,11 +45,11 @@
   transition: .2s ease-in-out;
 }
 
-.card:hover .card__overlay {
+.card1:hover .card__overlay1 {
   transform: translateY(0);
 }
 
-.card__header {
+.card__header1 {
   position: relative;
   display: flex;
   align-items: center;
@@ -61,7 +61,7 @@
   transition: .2s ease-in-out;
 }
 
-.card__arc {
+.card__arc1 {
   width: 80px;
   height: 80px;
   position: absolute;
@@ -70,29 +70,29 @@
   z-index: 1;
 }
 
-.card__arc path {
+.card__arc1 path {
   fill: var(--surface-color);
   d: path("M 40 80 c 22 0 40 -22 40 -40 v 40 Z");
 }       
 
-.card:hover .card__header {
+.card1:hover .card__header1 {
   transform: translateY(0);
 }
 
-.card__thumb {
+.card__thumb1 {
   flex-shrink: 0;
   width: 50px;
   height: 50px;      
   border-radius: 50%;      
 }
 
-.card__title {
+.card__title1 {
   font-size: 2em;
   margin: 0 0 .3em;
-  color: #6A515E;
+  color: red;
 }
 
-.card__tagline {
+.card__tagline1 {
   display: block;
   margin: 1em 0;
   font-family: "MockFlowFont";  
@@ -100,12 +100,12 @@
   color: #D7BDCA;  
 }
 
-.card__status {
+.card__status1 {
   font-size: 1em;
   color: #D7BDCA;
 }
 
-.card__description {
+.card__description1 {
   padding: 0 2em 2em;
   margin: 0;
   color: black;

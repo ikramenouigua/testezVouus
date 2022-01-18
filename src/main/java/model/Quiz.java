@@ -6,27 +6,30 @@ public class Quiz {
 	private String description;
 	private String Niveau;
 	private String emailuser;
-	
+	private int nbclic;
 	
 
-	public Quiz(int id, String sujet, String description, String niveau, String emailuser) {
+	
+
+
+	public Quiz(String sujet, String description, String niveau, String emailuser, int nbclic) {
+		super();
+		this.sujet = sujet;
+		this.description = description;
+		Niveau = niveau;
+		this.emailuser = emailuser;
+		this.nbclic = nbclic;
+	}
+
+	public Quiz(int id, String sujet, String description, String niveau, String emailuser, int nbclic) {
 		super();
 		this.id = id;
 		this.sujet = sujet;
 		this.description = description;
 		Niveau = niveau;
 		this.emailuser = emailuser;
+		this.nbclic = nbclic;
 	}
-
-	
-	public Quiz(String sujet, String description, String niveau, String emailuser) {
-		super();
-		this.sujet = sujet;
-		this.description = description;
-		Niveau = niveau;
-		this.emailuser = emailuser;
-	}
-
 
 	public int getId() {
 		return id;
@@ -70,6 +73,14 @@ public class Quiz {
 
 	public void setEmailuser(String emailuser) {
 		this.emailuser = emailuser;
+	}
+
+	public int getNbclic() {
+		return nbclic;
+	}
+
+	public void setNbclic(int nbclic) {
+		this.nbclic = nbclic;
 	}
 	
 	

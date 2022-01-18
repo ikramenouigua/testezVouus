@@ -16,11 +16,130 @@
      <link rel="stylesheet" href="css/bootstrap.min.css">
      <link rel="stylesheet" href="css/font-awesome.min.css">
      <link rel="stylesheet" href="css/aos.css">
-
+   
      <!-- MAIN CSS -->
      <link rel="stylesheet" href="css/tooplate-gymso-style.css">
 
 </head>
+<style>
+.xx {
+  font-family: 'Noto Sans JP', sans-serif;
+  background-color: #fef8f8;
+  box-sizing: border-box;
+   --surface-color: #fff;
+  --curve: 40;
+}
+
+.cards1 {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+  margin: 4rem 5vw;
+  padding: 0;
+  list-style-type: none;
+  
+  
+}
+
+.card1 {
+  position: relative;
+  display: block;
+  height: 100%;  
+  border-radius: calc(var(--curve) * 1px);
+  overflow: hidden;
+  text-decoration: none;
+ width:80%;
+ height:150%;
+}
+
+.card__image1 {      
+  width: 100%;
+  height: 60%;
+}
+
+.card__overlay1 {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 1;      
+  border-radius: calc(var(--curve) * 1px);    
+  background-color: var(--surface-color);      
+  transform: translateY(100%);
+  transition: .2s ease-in-out;
+}
+
+.card1:hover .card__overlay1 {
+  transform: translateY(0);
+}
+
+.card__header1 {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 2em;
+  padding: 2em;
+  border-radius: calc(var(--curve) * 1px) 0 0 0;    
+  background-color: var(--surface-color);
+  transform: translateY(-100%);
+  transition: .2s ease-in-out;
+}
+
+.card__arc1 {
+  width: 80px;
+  height: 80px;
+  position: absolute;
+  bottom: 100%;
+  right: 0;      
+  z-index: 1;
+}
+
+.card__arc1 path {
+  fill: var(--surface-color);
+  d: path("M 40 80 c 22 0 40 -22 40 -40 v 40 Z");
+}       
+
+.card1:hover .card__header1 {
+  transform: translateY(0);
+}
+
+.card__thumb1 {
+  flex-shrink: 0;
+  width: 50px;
+  height: 50px;      
+  border-radius: 50%;      
+}
+
+.card__title1 {
+  font-size: 2em;
+  margin: 0 0 .3em;
+  color: black;
+}
+
+.card__tagline1 {
+  display: block;
+  margin: 1em 0;
+  font-family: "MockFlowFont";  
+  font-size: .8em; 
+  color: black;  
+}
+
+.card__status1 {
+  font-size: 1em;
+  color: #696969;
+}
+
+.card__description1 {
+  padding: 0 2em 2em;
+  margin: 0;
+  color: black;
+  font-family: "MockFlowFont";   
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  overflow: hidden;
+}
+</style>
 <body data-spy="scroll" data-target="#navbarNav" data-offset="50">
 
     <!-- MENU BAR -->
@@ -55,9 +174,26 @@
                      <li class="nav-item">
                         <a href="COMPONENTS/chatbot/index.jsp" class="nav-link smoothScroll">Contactez</a>
                     </li>
+                    <%@ page import="dao.UserDAO, model.User,java.util.*" %>
+                     <% 
+                     HttpSession ses= request.getSession(true);
+                     String email= (String)ses.getAttribute("email");
+                     UserDAO UserDAO2 = new UserDAO();
+                    
+            		
+      	
+            		
+            		%>
+                   <%if (UserDAO2.is_Prof(email)==true){ %>
                      <li class="nav-item">
                         <a href="COMPONENTS/prof/dashboard.jsp" class="nav-link smoothScroll">Dashboard</a>
                     </li>
+                    <%} else{%>
+                   
+                     <li class="nav-item">
+                        <a href="COMPONENTS/etudiant/profile.jsp" class="nav-link smoothScroll">Profile</a>
+                    </li>
+                    <%} %>
                 </ul>
 
                 <ul class="social-icon ml-lg-3">
@@ -81,7 +217,12 @@
 
                          <div class="col-lg-8 col-md-10 mx-auto col-12">
                               <div class="hero-text mt-5 text-center">
-
+                                 <img
+                        alt="..."
+                        src="./images/logo11.png"
+                        height ="120"
+                        width="120"
+                      />
                                     <h6 data-aos="fade-up" data-aos-delay="300">Voulez-vous tester vos connaissances !</h6>
 
                                     <h1 class="text-white" data-aos="fade-up" data-aos-delay="500">Améliorer vos compétances grace à TESTEZ VOUS</h1>
@@ -94,13 +235,14 @@
                                     <%
 											}else{
                                     %>
+                                    <a href="COMPONENTS/logout.jsp" class="btn custom-btn mt-3" data-aos="fade-up" data-aos-delay="600"> deconnecter</a>
                                    
-                                    <a href="COMPONENTS/admin/dashboard.jsp" class="btn custom-btn mt-3" data-aos="fade-up" data-aos-delay="600"> deconnecter</a>
 									<%
 											}
-										%>
-
+										%>	
                                     <a href="#about" class="btn custom-btn bordered mt-3" data-aos="fade-up" data-aos-delay="700">Savoir plus</a>
+
+                                  
                                    
                               </div>
                          </div>
@@ -122,7 +264,7 @@
                     <p data-aos="fade-up" data-aos-delay="200">TESTEZ VOUS est une plateforme qui vous permet de tester votre connaissances dans
                     le domaine du developpement en passant des quiz de niveaux differents .</p>
 
-                    <a href="COMPONENTS/register.jsp" class="btn custom-btn bg-color mt-3" data-aos="fade-up" data-aos-delay="300" data-toggle="modal" >Become a member today</a>
+                    <a href="COMPONENTS/register.jsp" class="btn custom-btn bg-color mt-3" data-aos="fade-up" data-aos-delay="300" data-toggle="modal" >Devenir un membre</a>
                 </div>
 
                 <div class="mr-lg-auto mt-3 col-lg-4 col-md-6 col-12">
@@ -178,65 +320,68 @@
 
 
      <!-- CLASS -->
-     <section class="class section" id="class">
-               <div class="container">
-                    <div class="row">
-
-                            <div class="col-lg-12 col-12 text-center mb-5">
-                               
-
-                                <h2 data-aos="fade-up" data-aos-delay="200">Our Training Classes</h2>
-                             </div>
-
-                            <div class="col-lg-3 col-md-6 col-12" data-aos="fade-up" data-aos-delay="400">
-                                <div class="class-thumb">
-                                    <img src="images/class/JAVA.png" class="img-fluid h-60 w-60 rounded-full" alt="Class">
-
-                                    <div class="class-info">
-                                        <h3 class="mb-1">Yoga</h3>
-
-                                        <span><strong>Trained by</strong> - Bella</span>
-
-                                        <span class="class-price">$50</span>
-
-                                        <p class="mt-3">Lorem ipsum dolor sit amet, consectetur adipiscing</p>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="mt-5 mt-lg-0 mt-md-0 col-lg-3 col-md-6 col-12" data-aos="fade-up" data-aos-delay="500">
-                                <div class="class-thumb">
-                                    <img src="images/class/python.png" class="img-fluid h-60 w-60 rounded-full" alt="Class">
-
-                                    <div class="class-info">
-                                        <h3 class="mb-1">Areobic</h3>
-
-                                        <span><strong>Trained by</strong> - Mary</span>
-
-                                        <span class="class-price">$66</span>
-
-                                        <p class="mt-3">Lorem ipsum dolor sit amet, consectetur adipiscing</p>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="mt-5 mt-lg-0 col-lg-3 col-md-6 col-12" data-aos="fade-up" data-aos-delay="600">
-                                <div class="class-thumb">
-                                    <img src="images/class/PHP.png"  class="img-fluid h-60 w-60 rounded-full" alt="Class">
-
-                                    <div class="class-info">
-                                        <h3 class="mb-1">Cardio</h3>
-
-                                        <span><strong>Trained by</strong> - Cathe</span>
-
-                                        <span class="class-price">$75</span>
-
-                                        <p class="mt-3">Lorem ipsum dolor sit amet, consectetur adipiscing</p>
-                                    </div>
-                                </div>
-                            </div>
-
-                    </div>
+     <section class="" id="class">
+      <h2 data-aos="fade-up" data-aos-delay="200" style="text-align:center;">Nos quiz</h2>
+               <div class="xx">
+                    <%@ page import="dao.QuizDAO, model.Quiz,java.util.*" %>
+                     <% 
+                     QuizDAO quizDAO2 = new QuizDAO();
+                    
+            		List<Quiz> listquiz =  quizDAO2.selectQuizAll() ;
+            		Iterator<Quiz> iter = listquiz.iterator();
+            		%>
+           <ul class="cards1">
+              <% while(iter.hasNext()){
+                    	Quiz quiz = iter.next();
+                    	int id=quiz.getId();
+                    	%>
+  <li>
+    <a href="<%= request.getContextPath() %>/QuestionServlet?id=<%=quiz.getId()%>"  class="card1">
+     <% 
+                     
+                 
+            		 ses.setAttribute("id", id);
+            		
+            		%>
+    
+      <% if(quiz.getSujet().equals("JAVA")){ %>                  
+          <img class="card__image1" src="https://www.malekal.com/wp-content/uploads/Java_logo.jpg" alt="" />
+          <%} %>
+          
+          
+          <% if(quiz.getSujet().equals("php")){ %>                  
+          <img class="card__image1" src="https://wp.lean.fr/wp-content/uploads/2021/01/icon.php_.png" alt="" />
+          <%} %>
+          
+          <% if(quiz.getSujet().equalsIgnoreCase("python")){ %>                  
+          <img class="card__image1" src="https://www.developpez.net/forums/attachments/p597954d1/a/a/a" alt="" />
+          <%} %>
+          
+          <% if(quiz.getSujet().equals("JS")){ %>                  
+          <img class="card__image1" src="http://moralogiq.fr/wp-content/themes/moralogiq/images/logo/techno-js.png" alt="" />
+          <%} %>
+      <div class="card__overlay1">
+        <div class="card__header1">
+          <svg class="card__arc1" xmlns="http://www.w3.org/2000/svg"><path /></svg>   
+         
+          <div class="card__header-text1">
+          
+            <h3 class="card__title1"><%=quiz.getSujet() %></h3>
+                       
+            <span class="card__status1"><%=quiz.getNiveau() %></span><br>
+            <span class="card__status1">8 Questions</span>
+          </div>
+        </div>
+        <p class="card__description1"><%=quiz.getDescription() %></p>
+      </div>
+    </a>      
+  </li>
+   
+  <% } %>
+  
+ 
+  
+</ul>
                </div>
      </section>
 
@@ -252,13 +397,13 @@
                         <h2 class="mb-4 pb-2" data-aos="fade-up" data-aos-delay="200">N'hésitez pas à demander n'importe quoi</h2>
 
                         <form action="#" method="post" class="contact-form webform" data-aos="fade-up" data-aos-delay="400" role="form">
-                            <input type="text" class="form-control" name="cf-name" placeholder="Name">
+                            <input type="text" class="form-control" name="cf-name" placeholder="Nom">
 
                             <input type="email" class="form-control" name="cf-email" placeholder="Email">
 
                             <textarea class="form-control" rows="5" name="cf-message" placeholder="Message"></textarea>
 
-                            <button type="submit" class="form-control" id="submit-button" name="submit">Send Message</button>
+                            <button type="submit" class="form-control" id="submit-button" name="submit">Envoyer message</button>
                         </form>
                     </div>
 
